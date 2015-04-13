@@ -21,6 +21,7 @@ class VocabBlacklist
 	end
 
 	def self.censor(str, replace_with = "****")
+
 		PHRASES.each do |bad_phrase|
 			str.gsub!(/#{bad_phrase}/i, replace_with)
 		end
@@ -29,7 +30,7 @@ class VocabBlacklist
 			word = working_word.downcase.strip.gsub(CONSIDER_REGEX, '')
 
 			if FULL_WORDS.include?(word)
-				working_word.gsub!(word, replace_with)
+				working_word.gsub!(/#{word}/i, replace_with)
 			end
 
 			if GREEDY_WORDS.any? { |w| word.include?(w) }

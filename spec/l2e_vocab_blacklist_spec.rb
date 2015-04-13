@@ -80,6 +80,12 @@ describe VocabBlacklist do
 			str = VocabBlacklist.censor("Need that cocaine!", "REDACTED")
 			str.should == "Need that REDACTED!"
 		end
+
+		it "| Combined" do
+			str = VocabBlacklist.censor("I can say anything I fucking want to, now. Cocaine! ")
+			str.should == "I can say anything I **** want to, now. ****!"
+			
+		end
 	end
 
 end
