@@ -60,4 +60,26 @@ describe VocabBlacklist do
 		VocabBlacklist.blacklisted?("Fifty Shades of Grey").should == true
 	end
 
+	describe "| Word subsitution" do
+		it "| Full word" do
+			str = VocabBlacklist.censor("I analyzed the artist's use of anal sex.")
+			str.should == "I analyzed the artist's use of **** ****."
+		end
+
+		it "| Greedy dirty word" do
+			str = VocabBlacklist.censor("We thought that was a BITCHING presentation.")
+			str.should == "We thought that was a **** presentation."
+		end
+
+		it "| Phrases" do
+			str = VocabBlacklist.censor("We prefer children don't read 50 Shades of Gray.")
+			str.should == "We prefer children don't read ****."
+		end
+
+		it "| Alternate subsitution" do
+			str = VocabBlacklist.censor("Need that cocaine!", "REDACTED")
+			str.should == "Need that REDACTED!"
+		end
+	end
+
 end
