@@ -1,0 +1,3 @@
+class VocabBlacklist
+
+end
