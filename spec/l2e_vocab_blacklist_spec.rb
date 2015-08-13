@@ -88,4 +88,9 @@ describe VocabBlacklist do
 		end
 	end
 
+	it "| Should not remove line returns" do
+		str = VocabBlacklist.censor("This is...\n an innocuous sentence.")
+		str.should == "This is...\n an innocuous sentence."
+	end
+
 end

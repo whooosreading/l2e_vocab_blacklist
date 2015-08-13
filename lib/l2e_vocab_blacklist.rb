@@ -22,12 +22,14 @@ class VocabBlacklist
 
 	def self.censor(str, replace_with = "****")
 
+		require "pry"
+
 		PHRASES.each do |bad_phrase|
 			str.gsub!(/#{bad_phrase}/i, replace_with)
 		end
 
-		str.split(" ").map do |working_word|
-			word = working_word.downcase.strip.gsub(CONSIDER_REGEX, '')
+		str.split(/ /).map do |working_word|
+			word = working_word.downcase.gsub(CONSIDER_REGEX, '')
 
 			if FULL_WORDS.include?(word)
 				working_word.gsub!(/#{word}/i, replace_with)
