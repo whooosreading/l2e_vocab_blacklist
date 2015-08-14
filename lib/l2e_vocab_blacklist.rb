@@ -22,8 +22,6 @@ class VocabBlacklist
 
 	def self.censor(str, replace_with = "****")
 
-		require "pry"
-
 		PHRASES.each do |bad_phrase|
 			str.gsub!(/#{bad_phrase}/i, replace_with)
 		end
