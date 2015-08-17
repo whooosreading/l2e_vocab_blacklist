@@ -77,7 +77,7 @@ describe VocabBlacklist do
 		end
 
 		it "| Alternate subsitution" do
-			str = VocabBlacklist.censor("Need that cocaine!", "REDACTED")
+			str = VocabBlacklist.censor("Need that Cocaine!","1", "REDACTED")
 			str.should == "Need that REDACTED!"
 		end
 
@@ -91,6 +91,26 @@ describe VocabBlacklist do
 	it "| Should not remove line returns" do
 		str = VocabBlacklist.censor("This is...\n an innocuous sentence.")
 		str.should == "This is...\n an innocuous sentence."
+	end
+
+	describe "| Blacklist depending on age" do
+		
+		it "| Is not on blacklist" do
+			VocabBlacklist.blacklisted?("pigeon","6").should == false
+		end
+
+		it "| under age" do
+			VocabBlacklist.blacklisted?("asshole","7").should == true
+		end
+
+		it "| over age" do
+			VocabBlacklist.blacklisted?("Asshole","8").should == false
+		end
+
+		it "| default" do
+			VocabBlacklist.blacklisted?("Asshole").should == true
+		end
+
 	end
 
 end
