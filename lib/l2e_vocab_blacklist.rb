@@ -65,7 +65,7 @@ class VocabBlacklist
 
 	def self.check_full_words_csv(word,age)
 		FULL_WORDS_CSV.each do |row|
-			return true	 if row[1] >= age && row[0].downcase == word.downcase
+			return true	 if row[1].to_i >= age.to_i && row[0].downcase == word.downcase
 		end
 		return false
 	end
