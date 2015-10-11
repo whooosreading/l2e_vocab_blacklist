@@ -104,13 +104,15 @@ describe VocabBlacklist do
 		end
 
 		it "| over age" do
-			VocabBlacklist.blacklisted?("Asshole","8").should == false
+			VocabBlacklist.blacklisted?("Asshole","12").should == false
 		end
 
 		it "| default" do
 			VocabBlacklist.blacklisted?("Asshole").should == true
 		end
-
 	end
 
+	# describe "| Upload additional lists to filter" do 
+	# 	it "| "
+	# end
 end
