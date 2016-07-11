@@ -42,7 +42,7 @@ class VocabBlacklist
 	end
 
 	def self.file_to_normalized_words(file)
-		CSV.parse(File.read(file)).map(&:first).reject { |s| s.to_s.strip.empty?; puts s }.map(&:downcase).map { |s| s.gsub(CONSIDER_REGEX, '') }
+		CSV.parse(File.read(file)).map(&:first).reject { |s| s.to_s.strip.empty? }.map(&:downcase).map { |s| s.gsub(CONSIDER_REGEX, '') }
 	end
 
 	def self.words_with_expansions(words)
