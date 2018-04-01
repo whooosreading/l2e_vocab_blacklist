@@ -4,12 +4,25 @@ require 'csv'
 class VocabBlacklist
 
 	# Returns true or false, check to see if the 
-	def self.blacklisted?(str,age ="0")
+	def self.blacklisted?(str, age = "0")
 		# Sanitize string
-		str = str.downcase.strip.gsub(CONSIDER_REGEX, '')
+		str = str.downcase.strip
+
+		whitelisted_phrases = self.whitelist_matches(str)
+
 		# Blacklist if any of the words 
-		str.split(" ").each do |word|
-			return true	 if check_full_words_csv(word,age)
+		str.split(/[ -]/).each do |word|
+			word = word.gsub(CONSIDER_REGEX, "")
+
+			if check_full_words_csv(word, age)
+
+				is_whitelisted = whitelisted_phrases.any? do |phrase|
+					phrase.include?(word)
+				end
+				if !is_whitelisted
+					return true
+				end
+			end
 		end
 		# For compound dirty words
 		PHRASES.each do |bad_phrase|
@@ -19,30 +32,46 @@ class VocabBlacklist
 		return GREEDY_WORDS.any? { |s| str.include?(s) }
 	end
 
+	def self.whitelist_matches(text)
+		text = text.downcase.strip.gsub(CONSIDER_REGEX, "")
+		WHITELIST.select do |whitelist_phrase|
+			text.include?(whitelist_phrase)
+		end
+
+	end
 
 	def self.censor(str, age = "0", replace_with = "****")
 		PHRASES.each do |bad_phrase|
-			str.gsub!(/#{bad_phrase}/i, replace_with)
+			str.gsub!(/#{ bad_phrase }/i, replace_with)
 		end
 
+		whitelisted_phrases = self.whitelist_matches(str)
+
 		str.split(/ /).map do |working_word|
+			working_word.split(/-/).map do |sub_working_word|
+				word = sub_working_word.downcase.gsub(CONSIDER_REGEX, "")
 
-			word = working_word.downcase.gsub(CONSIDER_REGEX, '')
+				is_whitelisted = whitelisted_phrases.any? do |phrase|
+					phrase.include?(word)
+				end
 
-			if check_full_words_csv(word,age)
-				working_word.gsub!(/#{word}/i, replace_with)
-			end
+				if !is_whitelisted
+					if check_full_words_csv(word, age)
+						sub_working_word.gsub!(/#{ word }/i, replace_with)
+					end
 
-			if GREEDY_WORDS.any? { |w| word.include?(w) }
-				working_word = replace_with
-			end
-			
-			working_word
+					if GREEDY_WORDS.any? { |w| word.include?(w) }
+						sub_working_word = replace_with
+					end
+				end
+
+				sub_working_word
+			end.join("-")
 		end.join(" ")
 	end
 
 	def self.file_to_normalized_words(file)
-		CSV.parse(File.read(file)).map(&:first).reject { |s| s.to_s.strip.empty? }.map(&:downcase).map { |s| s.gsub(CONSIDER_REGEX, '') }
+		CSV.parse(File.read(file)).map(&:first).reject { |s| s.to_s.strip.empty? }.map(&:downcase).map { |s| s.gsub(CONSIDER_REGEX, "") }
 	end
 
 	def self.words_with_expansions(words)
@@ -55,15 +84,17 @@ class VocabBlacklist
 	PHRASES = file_to_normalized_words("#{BLACKLIST_DIR}/full_words.csv").select { |w| w.split(" ").length > 1 }
 	FULL_WORDS = file_to_normalized_words("#{BLACKLIST_DIR}/full_words.csv").reject { |w| w.split(" ").length > 1 }
 	GREEDY_WORDS = words_with_expansions(file_to_normalized_words("#{BLACKLIST_DIR}/greedy_words.txt")).uniq.freeze
+	WHITELIST = file_to_normalized_words("#{BLACKLIST_DIR}/whitelist.csv").uniq.freeze
 
 	FULL_WORDS_CSV = CSV.parse(File.read("#{BLACKLIST_DIR}/full_words.csv"))
 
 	private
 
-	def self.check_full_words_csv(word,age)
-		FULL_WORDS_CSV.each do |row|
-			return true	 if row[1].to_i >= age.to_i && row[0].downcase == word.downcase
+		def self.check_full_words_csv(word, age)
+			FULL_WORDS_CSV.each do |row|
+				return true	 if row[1].to_i >= age.to_i && row[0].downcase == word.downcase
+			end
+			return false
 		end
-		return false
-	end
+
 end

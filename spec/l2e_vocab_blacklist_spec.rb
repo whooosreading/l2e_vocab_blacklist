@@ -29,6 +29,10 @@ describe VocabBlacklist do
 			VocabBlacklist.blacklisted?("mari.juana!").should == true
 		end
 
+		it "| Catch hyphenated words" do
+			VocabBlacklist.blacklisted?("hyper-turd").should == true
+		end
+
 		it "| Don't ignore asterisk" do
 			VocabBlacklist.blacklisted?("sh*t").should == true
 			VocabBlacklist.blacklisted?("sht").should == false
@@ -84,13 +88,37 @@ describe VocabBlacklist do
 		it "| Combined" do
 			str = VocabBlacklist.censor("I can say anything I fucking want to, now. Cocaine! ")
 			str.should == "I can say anything I **** want to, now. ****!"
-			
+		end
+
+		it "| Hyphenated" do
+			str = VocabBlacklist.censor("Clara-Anne is an uber-jackass you know....")
+			str.should == "Clara-Anne is an uber-**** you know...."
 		end
 	end
 
 	it "| Should not remove line returns" do
 		str = VocabBlacklist.censor("This is...\n an innocuous sentence.")
 		str.should == "This is...\n an innocuous sentence."
+	end
+
+	describe "| Whitelist" do
+		it "| Don't blacklist words if they are in the whitelisted phrases" do
+			VocabBlacklist.blacklisted?("I love Moby Dick").should == false
+			VocabBlacklist.censor("I love Moby Dick").should == "I love Moby Dick"
+		end
+
+		it "| Still blacklist other words if they are present NOT in the whitelisted phrases" do
+			VocabBlacklist.blacklisted?("I hate Moby Dick because Ahab is a asshole.").should == true
+			VocabBlacklist.censor("I hate Moby Dick because Ahab is a asshole.").should ==
+				"I hate Moby Dick because Ahab is a ****."
+
+			# Note: They could still get away with saying Ahab is a "dick," unfortunately
+		end
+
+		it "| Don't break checking for underlying words" do
+			VocabBlacklist.blacklisted?("Now I'm just being a dick").should == true
+		end
+
 	end
 
 	describe "| Blacklist depending on age" do
@@ -112,7 +140,4 @@ describe VocabBlacklist do
 		end
 	end
 
-	# describe "| Upload additional lists to filter" do 
-	# 	it "| "
-	# end
 end
