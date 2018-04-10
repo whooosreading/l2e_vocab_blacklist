@@ -3,7 +3,7 @@ require 'csv'
 
 class VocabBlacklist
 
-	# Returns true or false, check to see if the 
+	# Returns true or false, check to see if the string is on the blacklist
 	def self.blacklisted?(str, age = "0")
 		# Sanitize string
 		str = str.downcase.strip
@@ -40,9 +40,14 @@ class VocabBlacklist
 
 	end
 
-	def self.censor(str, age = "0", replace_with = "****")
+	def self.censor(str, age = "0", replace_with = "*")
 		PHRASES.each do |bad_phrase|
-			str.gsub!(/#{ bad_phrase }/i, replace_with)
+			# match number of characters for any replace_with that is 1 character
+			if replace_with.length == 1
+				str.gsub!(/#{ bad_phrase }/i, replace_with * bad_phrase.length)
+			else
+				str.gsub!(/#{ bad_phrase }/i, replace_with)
+			end
 		end
 
 		whitelisted_phrases = self.whitelist_matches(str)
@@ -57,11 +62,21 @@ class VocabBlacklist
 
 				if !is_whitelisted
 					if check_full_words_csv(word, age)
-						sub_working_word.gsub!(/#{ word }/i, replace_with)
+						# match number of characters for any replace_with that is 1 character
+						if replace_with.length == 1
+							sub_working_word.gsub!(/#{ word }/i, replace_with * word.length)
+						else
+							sub_working_word.gsub!(/#{ word }/i, replace_with)
+						end
 					end
 
 					if GREEDY_WORDS.any? { |w| word.include?(w) }
-						sub_working_word = replace_with
+						# match number of characters for any replace_with that is 1 character
+						if replace_with.length == 1
+							sub_working_word = replace_with * sub_working_word.length
+						else
+							sub_working_word = replace_with
+						end
 					end
 				end
 
