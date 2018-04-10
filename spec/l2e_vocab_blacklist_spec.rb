@@ -1,4 +1,4 @@
-require 'rack/test'
+require 'rspec'
 require 'l2e_vocab_blacklist'
 
 RSpec.configure do |config|
@@ -67,17 +67,17 @@ describe VocabBlacklist do
 	describe "| Word subsitution" do
 		it "| Full word" do
 			str = VocabBlacklist.censor("I analyzed the artist's use of anal sex.")
-			str.should == "I analyzed the artist's use of **** ****."
+			str.should == "I analyzed the artist's use of **** ***."
 		end
 
 		it "| Greedy dirty word" do
 			str = VocabBlacklist.censor("We thought that was a BITCHING presentation.")
-			str.should == "We thought that was a **** presentation."
+			str.should == "We thought that was a ******** presentation."
 		end
 
 		it "| Phrases" do
 			str = VocabBlacklist.censor("We prefer children don't read 50 Shades of Gray.")
-			str.should == "We prefer children don't read ****."
+			str.should == "We prefer children don't read *****************."
 		end
 
 		it "| Alternate subsitution" do
@@ -87,12 +87,12 @@ describe VocabBlacklist do
 
 		it "| Combined" do
 			str = VocabBlacklist.censor("I can say anything I fucking want to, now. Cocaine! ")
-			str.should == "I can say anything I **** want to, now. ****!"
+			str.should == "I can say anything I ******* want to, now. *******!"
 		end
 
 		it "| Hyphenated" do
 			str = VocabBlacklist.censor("Clara-Anne is an uber-jackass you know....")
-			str.should == "Clara-Anne is an uber-**** you know...."
+			str.should == "Clara-Anne is an uber-******* you know...."
 		end
 	end
 
@@ -110,7 +110,7 @@ describe VocabBlacklist do
 		it "| Still blacklist other words if they are present NOT in the whitelisted phrases" do
 			VocabBlacklist.blacklisted?("I hate Moby Dick because Ahab is a asshole.").should == true
 			VocabBlacklist.censor("I hate Moby Dick because Ahab is a asshole.").should ==
-				"I hate Moby Dick because Ahab is a ****."
+				"I hate Moby Dick because Ahab is a *******."
 
 			# Note: They could still get away with saying Ahab is a "dick," unfortunately
 		end
