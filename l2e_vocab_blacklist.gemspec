@@ -9,4 +9,7 @@ Gem::Specification.new do |s|
   s.files       = Dir["{lib}/**/*.rb", "{lib}/**/*.txt", "{lib}/**/*.csv", "bin/*", "LICENSE", "*.md"]
   s.homepage    = 'https://github.com/whooosreading/l2e_vocab_blacklist'
   s.license     = 'All rights reserved, for now'
+
+  s.add_runtime_dependency "activesupport-inflector"
+  s.add_runtime_dependency "i18n"
 end
