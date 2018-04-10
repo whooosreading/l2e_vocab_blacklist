@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'l2e_vocab_blacklist'
-  s.version     = '1.4.1'
+  s.version     = '1.4.2'
   s.date        = '2018-04-02'
   s.summary     = "L2E Vocab Blacklist"
   s.description = "Detect words and partial-words that shouldn't be used on Learn2Earn Whooo's Reading website"
@@ -10,6 +10,6 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/whooosreading/l2e_vocab_blacklist'
   s.license     = 'All rights reserved, for now'
 
-  s.add_runtime_dependency "activesupport-inflector"
-  s.add_runtime_dependency "i18n"
+  # s.add_runtime_dependency "activesupport-inflector"
+  # s.add_runtime_dependency "i18n"
 end
