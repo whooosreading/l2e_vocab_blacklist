@@ -21,3 +21,4 @@ gem 'l2e_vocab_blacklist'
 5. Remove the old `.gem` file
 6. Push the new gem with: `gem push l2e_vocab_blacklist-X.X.X.gem` substituting in the gem version
   1. You may need to sign in on the CLI to push the gem. Talk to Greg about this.
+7. Commit and push your changes
