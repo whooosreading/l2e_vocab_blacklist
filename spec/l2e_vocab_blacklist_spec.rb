@@ -77,7 +77,7 @@ describe VocabBlacklist do
 
 		it "| Phrases" do
 			str = VocabBlacklist.censor("We prefer children don't read 50 Shades of Gray.")
-			str.should == "We prefer children don't read *****************."
+			str.should == "We prefer children don't read ******************"
 		end
 
 		it "| Alternate subsitution" do
