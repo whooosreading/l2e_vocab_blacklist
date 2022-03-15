@@ -9,16 +9,16 @@ permissive with older students.
 
 Use:
 ```
-gem 'l2e_vocab_blacklist'
+gem 'wr_vocab_blacklist'
 ```
 
 ### To update and publish the gem
 
 1. Merge pull requests, pull to local master
-2. Run tests: `bundle exec rspec spec/l2e_vocab_blacklist_spec.rb`
-3. Increase the gem version and date in `l2e_vocab_blacklist.gemspec`
-4. Run `gem build l2e_vocab_blacklist.gemspec`
+2. Run tests: `bundle exec rspec spec/wr_vocab_blacklist_spec.rb`
+3. Increase the gem version and date in `wr_vocab_blacklist.gemspec`
+4. Run `gem build wr_vocab_blacklist.gemspec`
 5. Remove the old `.gem` file
-6. Push the new gem with: `gem push l2e_vocab_blacklist-X.X.X.gem` substituting in the gem version
+6. Push the new gem with: `gem push wr_vocab_blacklist-X.X.X.gem` substituting in the gem version
   1. You may need to sign in on the CLI to push the gem. Talk to Greg about this.
 7. Commit and push your changes

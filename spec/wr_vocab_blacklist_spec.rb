@@ -1,5 +1,5 @@
 require 'rspec'
-require 'l2e_vocab_blacklist'
+require 'wr_vocab_blacklist'
 
 RSpec.configure do |config|
 	config.expect_with :rspec do |c|

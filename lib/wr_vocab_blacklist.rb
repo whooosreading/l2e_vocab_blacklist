@@ -93,7 +93,7 @@ class VocabBlacklist
 		words.map { |s| [s, s.pluralize, s.singularize] }.uniq.flatten
 	end
 
-	BLACKLIST_DIR = File.join(File.dirname(__FILE__), 'l2e_vocab_blacklist/blacklists')
+	BLACKLIST_DIR = File.join(File.dirname(__FILE__), 'wr_vocab_blacklist/blacklists')
 	CONSIDER_REGEX = /[^0-9a-z\* ]/i
 
 	PHRASES = file_to_normalized_words("#{BLACKLIST_DIR}/full_words.csv").select { |w| w.split(" ").length > 1 }
