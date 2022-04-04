@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'wr_vocab_blacklist'
-  s.version     = '0.0.0'
-  s.date        = '2022-03-15'
+  s.version     = '0.0.1'
+  s.date        = '2022-03-16'
   s.summary     = "Whooo's Reading Vocab Blacklist"
   s.description = "Detect words and partial-words that shouldn't be used on Whooo's Reading website"
   s.authors     = ["Greg Sherrid", "Gilles Ferone", "Kevin Schroeder", "Matt Schleifman", "Whooo's Reading by Learn2Earn"]
