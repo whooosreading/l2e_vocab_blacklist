@@ -40,10 +40,12 @@ class VocabBlacklist
 
 	end
 
-	def self.censor(str, age = "0", replace_with = "*")
+	def self.censor(str, age = "0", replace_with = "*", keep_first_letter = false)
 		PHRASES.each do |bad_phrase|
 			# match number of characters for any replace_with that is 1 character
-			if replace_with.length == 1
+			if replace_with.length == 1 && keep_first_letter
+				str.gsub!(/#{ bad_phrase }/i, bad_phrase[0] + replace_with * (bad_phrase.length - 1))
+			elsif if replace_with.length == 1
 				str.gsub!(/#{ bad_phrase }/i, replace_with * bad_phrase.length)
 			else
 				str.gsub!(/#{ bad_phrase }/i, replace_with)
