@@ -140,4 +140,11 @@ describe VocabBlacklist do
 		end
 	end
 
+	describe "| Blacklist can keep first letter" do
+		it "| default" do
+			str = VocabBlacklist.censor("We thought that was a BITCHING presentation.", 0, "*", true)
+			str.should == "We thought that was a B******* presentation."
+		end
+	end
+
 end
