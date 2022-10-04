@@ -45,7 +45,7 @@ class VocabBlacklist
 			# match number of characters for any replace_with that is 1 character
 			if replace_with.length == 1 && keep_first_letter
 				str.gsub!(/#{ bad_phrase }/i, bad_phrase[0])
-			elsif if replace_with.length == 1
+			elsif replace_with.length == 1
 				str.gsub!(/#{ bad_phrase }/i, replace_with * bad_phrase.length)
 			else
 				str.gsub!(/#{ bad_phrase }/i, replace_with)
@@ -65,7 +65,9 @@ class VocabBlacklist
 				if !is_whitelisted
 					if check_full_words_csv(word, age)
 						# match number of characters for any replace_with that is 1 character
-						if replace_with.length == 1
+						if replace_with.length == 1 && keep_first_letter
+							sub_working_word.gsub!(/#{ word }/i, word[0])
+						elsif replace_with.length == 1
 							sub_working_word.gsub!(/#{ word }/i, replace_with * word.length)
 						else
 							sub_working_word.gsub!(/#{ word }/i, replace_with)
@@ -74,7 +76,9 @@ class VocabBlacklist
 
 					if GREEDY_WORDS.any? { |w| word.include?(w) }
 						# match number of characters for any replace_with that is 1 character
-						if replace_with.length == 1
+						if replace_with.length == 1 && keep_first_letter
+							sub_working_word = sub_working_word[0]
+						elsif replace_with.length == 1
 							sub_working_word = replace_with * sub_working_word.length
 						else
 							sub_working_word = replace_with
